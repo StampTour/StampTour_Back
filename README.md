@@ -9,3 +9,6 @@
   - jdbc 연동
   - jpa 연동
   - mysql 연동 및 데이터베이스 연동
+- import javax.persistence.Entity;가 연동되지 않는 오류
+  - javax : spring boot 3 이전 버전에서 사용
+  - jakarta로 연동해 해결
