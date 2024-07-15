@@ -28,8 +28,4 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteSessionDataFromDatabase(String sessionId) {
-        // 세션 데이터 삭제 로직 구현
-        // userRepository.deleteBy... 등의 메서드를 사용하여 데이터 삭제
-    }
 }
