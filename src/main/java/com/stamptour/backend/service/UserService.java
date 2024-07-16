@@ -1,7 +1,7 @@
 package com.stamptour.backend.service;
 
-import com.stamptour.backend.repository.UserRepository;
 import com.stamptour.backend.user.User;
+import com.stamptour.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

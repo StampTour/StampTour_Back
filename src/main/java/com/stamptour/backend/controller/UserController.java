@@ -30,16 +30,9 @@ public class UserController {
         logger.info("Received login request for userid: " + inputUserid);
         logger.info("Current session userid: " + sessionUserid);
 
-        if (sessionUserid != null) {
-            User sessionUser = userRepository.findByUserid(sessionUserid);
-
-            if (sessionUser != null && sessionUser.getUserid().equals(inputUserid)) {
-                logger.info("세션 유효: " + sessionUserid);
-                return new ResponseEntity<>("로그인 성공: " + sessionUserid, HttpStatus.OK);
-            } else {
-                logger.info("로그인 실패: 세션 정보와 일치하지 않습니다");
-                return new ResponseEntity<>("로그인 실패: 세션 정보와 일치하지 않습니다", HttpStatus.UNAUTHORIZED);
-            }
+        if (sessionUserid != null && sessionUserid.equals(inputUserid)) {
+            logger.info("세션 유효: " + sessionUserid);
+            return new ResponseEntity<>("로그인 성공: " + sessionUserid, HttpStatus.OK);
         } else {
             User user = userRepository.findByUserid(inputUserid);
 
@@ -59,37 +52,4 @@ public class UserController {
         }
     }
 
-    @GetMapping("/session-check")
-    public ResponseEntity<String> checkSession(HttpSession session) {
-        String userid = (String) session.getAttribute("userid");
-
-        logger.info("Checking session. Current session userid: " + userid);
-
-        if (userid != null) {
-            User user = userRepository.findByUserid(userid);
-            if (user != null) {
-                logger.info("세션 유효: " + userid);
-                return new ResponseEntity<>("세션 유효: " + userid, HttpStatus.OK);
-            } else {
-                session.invalidate();
-                logger.info("세션이 유효하지 않습니다: 사용자 정보 없음");
-                return new ResponseEntity<>("세션이 유효하지 않습니다: 사용자 정보 없음", HttpStatus.UNAUTHORIZED);
-            }
-        } else {
-            logger.info("세션이 유효하지 않습니다");
-            return new ResponseEntity<>("세션이 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @GetMapping("/session-info")
-    public ResponseEntity<String> sessionInfo(HttpSession session) {
-        String sessionUserid = (String) session.getAttribute("userid");
-        logger.info("Current session userid: " + sessionUserid);
-
-        if (sessionUserid != null) {
-            return new ResponseEntity<>("세션에 저장된 userid: " + sessionUserid, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("세션에 userid가 없습니다", HttpStatus.OK);
-        }
-    }
 }
