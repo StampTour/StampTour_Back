@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 테스트</title>
+</head>
+<body>
+<div>
+    <input id="userid" type="text" placeholder="사용자 ID를 입력하세요">
+    <button onclick="login()">로그인</button>
+</div>
+<div id="response"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function login() {
+        const userid = document.getElementById('userid').value;
+
+        axios.post('http://localhost:8080/api/login', { userid })
+            .then(response => {
+                console.log('서버 응답:', response.data);
+                document.getElementById('response').innerText = response.data;
+            })
+            .catch(error => {
+                console.error('에러 발생:', error);
+                document.getElementById('response').innerText = '에러 발생: ' + error.message;
+            });
+    }
+</script>
+</body>
+</html>
