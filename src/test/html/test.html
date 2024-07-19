@@ -17,7 +17,7 @@
     function login() {
         const userid = document.getElementById('userid').value;
 
-        axios.post('http://localhost:8080/api/login', { userid })
+        axios.post('http://35.216.73.103:8080/api/login', { userid })
             .then(response => {
                 console.log('서버 응답:', response.data);
                 document.getElementById('response').innerText = response.data;
