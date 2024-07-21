@@ -1,6 +1,6 @@
 package com.stamptour.backend.service;
 
-import com.stamptour.backend.user.User;
+import com.stamptour.backend.domain.User;
 import com.stamptour.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +12,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findByUserid(String userid) {
-        return userRepository.findByUserid(userid);
+    public User findByPassword(String password) {
+        return userRepository.findByPassword(password);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
 }

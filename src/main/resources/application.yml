@@ -1,0 +1,20 @@
+server:
+    port: 8080
+    servlet:
+        session:
+            timeout: 86400
+spring:
+    application:
+        name: backend_v1
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: test1234
+        url: jdbc:mysql://ls-7d364c1e0c0dbf6ea580a4a1b4db9e2a1b7625bb.c76ie4socr1d.ap-northeast-2.rds.amazonaws.com:3306/stamptour?serverTimezone=UTC&characterEncoding=UTF-8
+        username: dbmasteruser
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+        show-sql: true

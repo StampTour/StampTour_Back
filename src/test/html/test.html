@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-    <input id="userid" type="text" placeholder="사용자 ID를 입력하세요">
+    <input id="password" type="text" placeholder="사용자 ID를 입력하세요">
     <button onclick="login()">로그인</button>
 </div>
 <div id="response"></div>
@@ -15,9 +15,9 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     function login() {
-        const userid = document.getElementById('userid').value;
+        const password = document.getElementById('password').value;
 
-        axios.post('http://35.216.73.103:8080/api/login', { userid })
+        axios.post('https://dm4buye7dda55.cloudfront.net/api/login', { password })
             .then(response => {
                 console.log('서버 응답:', response.data);
                 document.getElementById('response').innerText = response.data;

@@ -1,4 +1,4 @@
-package com.stamptour.backend.user;
+package com.stamptour.backend.domain;
 
 import jakarta.persistence.*;
 
@@ -14,18 +14,12 @@ import lombok.Setter;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String password;
 
-    @Column(nullable = false)
-    private String userid;
 
     @Builder
-    public User(String userid) {
-        this.userid = userid;
+    public User(String password) {
+        this.password = password;
     }
 
-    public User update(String userid) {
-        this.userid = userid;
-        return this;
-    }
 }
