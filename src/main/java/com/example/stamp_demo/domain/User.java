@@ -12,17 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-
-    @OneToOne(mappedBy = "user")
-    private QrStamp qrStamp;
-
     @Column(nullable = false)
-    private String userid;
+    private String password;
 
     @Builder
-    public User(String userid) {
-        this.userid = userid;
+    public User(String password) {
+        this.password = password;
     }
 }

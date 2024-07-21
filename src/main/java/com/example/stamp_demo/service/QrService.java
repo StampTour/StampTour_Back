@@ -17,9 +17,9 @@ public class QrService {
         this.qrRepository = qrRepository;
     }
 
-    // 특정 User의 ID로 Qr 엔티티 조회
-    public Optional<QrStamp> findQrByUserId(Long userId) {
-        return qrRepository.findByUserId(userId);
+    // 특정 User의 pw로 Qr 엔티티 조회
+    public Optional<QrStamp> findByUsrpw(String usrpw) {
+        return qrRepository.findByUsrpw(usrpw); // 메서드명 수정
     }
 
     public QrStamp saveQrStamp(QrStamp qrstamp) {

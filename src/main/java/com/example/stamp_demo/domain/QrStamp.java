@@ -9,18 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@IdClass(QrStampId.class)
 @NoArgsConstructor
 public class QrStamp {
-    @Id
-    private Long qrId;
 
     @Id
-    private Long usr;
+    private String usrpw;
 
     @OneToOne
-    @MapsId("usr")
-    @JoinColumn(name = "usr", referencedColumnName = "id")
+    @MapsId("usrpw")
+    @JoinColumn(name = "usrpw", referencedColumnName = "password")
     private User user;
 
 
@@ -46,15 +43,8 @@ public class QrStamp {
     private boolean qr10 = false;
 
     @Builder
-    public QrStamp(Long qrId, Long usr, User user) {
-        this.qrId = qrId;
-        this.usr = usr;
-        this.user = user;
-    }
-
-    public QrStamp(QrStampId id, User user) {
-        this.qrId = id.getQrId();
-        this.usr = id.getUsr();
+    public QrStamp( User user) {
+        this.usrpw = user.getPassword();
         this.user = user;
     }
 }

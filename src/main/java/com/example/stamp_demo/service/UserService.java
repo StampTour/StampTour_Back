@@ -12,8 +12,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findByUserid(String userid) {
-        return userRepository.findByUserid(userid);
+    public User findByPassword(String password) {
+        return userRepository.findByPassword(password);
     }
 
     public User saveUser(User user) {

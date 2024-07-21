@@ -7,7 +7,6 @@ import com.example.stamp_demo.domain.QrStamp;
 import com.example.stamp_demo.service.QrService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +28,10 @@ public class StampController {
 
     @PutMapping("/updateData/{param}")
     public ResponseEntity<QrResponseDto> updateData(@PathVariable int param, @RequestBody QrStamp qrstamp, HttpSession session) {
-        Long sessionUserid = (Long) session.getAttribute("id");
+        String sessionUserPassword = (String) session.getAttribute("password");
 
-        // 세션에서 가져온 사용자 ID로 Qr 엔티티 조회
-        Optional<QrStamp> qrOptional = qrService.findQrByUserId(sessionUserid);
+        // 세션에서 가져온 사용자 pw로 Qr 엔티티 조회
+        Optional<QrStamp> qrOptional = qrService.findByUsrpw(sessionUserPassword);
 
         if (qrOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

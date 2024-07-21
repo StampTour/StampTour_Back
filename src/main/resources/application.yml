@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://ls-7d364c1e0c0dbf6ea580a4a1b4db9e2a1b7625bb.c76ie4socr1d.ap-northeast-2.rds.amazonaws.com:3306/stamp_demo?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://ls-7d364c1e0c0dbf6ea580a4a1b4db9e2a1b7625bb.c76ie4socr1d.ap-northeast-2.rds.amazonaws.com:3306/stamptour?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: dbmasteruser
     password: test1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true

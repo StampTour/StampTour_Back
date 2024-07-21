@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class QrResponseDto {
-    private Long qrId;
-    private Long usrid;
+    private String usrpw;
     private boolean qr1;
     private boolean qr2;
     private boolean qr3;
@@ -21,7 +20,7 @@ public class QrResponseDto {
     private boolean qr10;
 
     public QrResponseDto(QrStamp qrStamp) {
-        this.usrid = qrStamp.getUser().getId();
+        this.usrpw = qrStamp.getUser().getPassword();
         this.qr1 = qrStamp.isQr1();
         this.qr2 = qrStamp.isQr2();
         this.qr3 = qrStamp.isQr3();

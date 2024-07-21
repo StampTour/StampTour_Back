@@ -1,7 +1,6 @@
 package com.example.stamp_demo.controller;
 
 import com.example.stamp_demo.domain.QrStamp;
-import com.example.stamp_demo.domain.QrStampId;
 import com.example.stamp_demo.repository.UserRepository;
 import com.example.stamp_demo.domain.User;
 import com.example.stamp_demo.service.QrService;
@@ -26,36 +25,33 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginOrRegister(@RequestBody User user, HttpSession session) {
-        String inputUserid = user.getUserid();
-        String sessionUserid = (String) session.getAttribute("userid");
+        String inputUserPassword = user.getPassword();
+        String sessionUserPassword = (String) session.getAttribute("password");
 
-        logger.info("Received login request for userid: " + inputUserid);
-        logger.info("Current session userid: " + sessionUserid);
+        logger.info("Received login request for userid: " + inputUserPassword);
+        logger.info("Current session userid: " + sessionUserPassword);
 
-        if (sessionUserid != null && sessionUserid.equals(inputUserid)) {
-            logger.info("세션 유효: " + sessionUserid);
-            return new ResponseEntity<>("로그인 진행: " + sessionUserid, HttpStatus.OK);
+        if ( sessionUserPassword != null && sessionUserPassword.equals(inputUserPassword)) {
+            logger.info("세션 유효: " + sessionUserPassword);
+            return new ResponseEntity<>("로그인 진행: " + sessionUserPassword, HttpStatus.OK);
         } else {
-            user = userRepository.findByUserid(inputUserid);
+            user = userRepository.findByPassword(inputUserPassword);
 
             if (user == null) {
                 // 사용자가 존재하지 않으면 회원가입
-                User newUser = new User(inputUserid);
+                User newUser = new User(inputUserPassword);
                 userRepository.save(newUser);
-                session.setAttribute("userid", inputUserid);
-                session.setAttribute("id", newUser.getId());
-                QrStampId qrStampId = new QrStampId();
-                qrStampId.setQrId(1L); // qrId를 적절히 설정
-                qrStampId.setUsr(newUser.getId());
-                QrStamp qrStamp = new QrStamp(qrStampId, newUser);
+                session.setAttribute("password", newUser.getPassword());
+                QrStamp qrStamp = QrStamp.builder()
+                        .user(user)
+                        .build();
                 qrService.saveQrStamp(qrStamp);
-                logger.info("회원가입 및 로그인 성공: 세션에 저장된 userid = " + session.getAttribute("userid"));
+                logger.info("회원가입 및 로그인 성공: 세션에 저장된 password = " + session.getAttribute("password"));
                 return new ResponseEntity<>("회원가입 및 로그인 성공", HttpStatus.OK);
             } else {
                 // 사용자가 존재하면 로그인
-                session.setAttribute("userid", inputUserid);
-                session.setAttribute("id", user.getId());
-                logger.info("로그인 성공: 세션에 저장된 userid = " + session.getAttribute("userid"));
+                session.setAttribute("password", user.getPassword());
+                logger.info("로그인 성공: 세션에 저장된 password = " + session.getAttribute("password"));
                 return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
             }
         }
