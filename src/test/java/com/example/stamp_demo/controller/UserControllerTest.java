@@ -45,7 +45,6 @@ public class UserControllerTest {
         session = new MockHttpSession();
     }
 
-
     //비번이 있을 경우 Login 작동 확인 코드
     @Test
     public void testLoginWithExistingUser() throws Exception {

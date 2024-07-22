@@ -80,6 +80,7 @@ public class StampController {
         // QrResponseDto 생성 및 반환
         QrResponseDto responseDto = new QrResponseDto(qr);
 
+
         return ResponseEntity.ok(responseDto);
     }
 }
