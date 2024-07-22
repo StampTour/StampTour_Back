@@ -93,12 +93,18 @@ public class StampControllerTest {
         assertTrue(qrStamp.isQr1());
         assertEquals(ResponseEntity.ok(new QrResponseDto(qrStamp)), response);
 
+        // 변경된 QrStamp 데이터 출력
+        System.out.println("Updated QrStamp after param 1: " + qrStamp);
+
         // param 값 5로 테스트
         response = stampController.updateData(5, qrStamp, session);
 
         // Qr5가 true로 설정되었는지 확인
         assertTrue(qrStamp.isQr5());
         assertEquals(ResponseEntity.ok(new QrResponseDto(qrStamp)), response);
+
+        // 변경된 QrStamp 데이터 출력
+        System.out.println("Updated QrStamp after param 5: " + qrStamp);
 
         // qrService.saveQrStamp가 호출되었는지 확인
         verify(qrService, times(2)).saveQrStamp(qrStamp);

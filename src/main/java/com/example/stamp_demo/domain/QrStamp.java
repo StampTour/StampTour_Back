@@ -47,4 +47,21 @@ public class QrStamp {
         this.usrpw = user.getPassword();
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "QrStamp{" +
+                "usrpw='" + usrpw + '\'' +
+                ", qr1=" + qr1 +
+                ", qr2=" + qr2 +
+                ", qr3=" + qr3 +
+                ", qr4=" + qr4 +
+                ", qr5=" + qr5 +
+                ", qr6=" + qr6 +
+                ", qr7=" + qr7 +
+                ", qr8=" + qr8 +
+                ", qr9=" + qr9 +
+                ", qr10=" + qr10 +
+                '}';
+    }
 }
