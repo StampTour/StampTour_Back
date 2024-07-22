@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@CrossOrigin(origins = {"http://localhost:63342",
+        "http://localhost:3000",
+        "https://tmdstamptour.netlify.app",
+        "https://dm4buye7dda55.cloudfront.net"})
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -21,50 +28,36 @@ public class UserController {
     @Autowired
     private UserRepository userRepository; // UserRepository는 사용자 정보를 관리하는 Repository
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user, HttpSession session) {
-        String inputPassword = user.getPassword();
+    public ResponseEntity<String> loginOrRegister(@RequestBody User user, HttpSession session) {
+        String inputUserPassword = user.getPassword();
+        String sessionUserPassword = (String) session.getAttribute("password");
 
-        // 입력된 비밀번호로 사용자 검색
-        User existingUser = userRepository.findByPassword(inputPassword);
-        if (existingUser != null) {
-            // 사용자 인증 성공: 세션에 사용자 ID 저장
-            session.setAttribute("password", existingUser.getPassword()); // 세션에 사용자 ID 저장
+        logger.info("Received login request for userid: " + inputUserPassword);
+        logger.info("Current session userid: " + sessionUserPassword);
 
-            // 로그인 성공 시, 클라이언트에게 리다이렉트 URL 반환
-            Map<String, String> response = new HashMap<>();
-            response.put("redirectUrl", "https://tmdstamptour.netlify.app/"); // React 애플리케이션의 URL
-            return new ResponseEntity<>(response, HttpStatus.OK);
+        if ( sessionUserPassword != null && sessionUserPassword.equals(inputUserPassword)) {
+            logger.info("세션 유효: " + sessionUserPassword);
+            return new ResponseEntity<>("로그인 진행: " + sessionUserPassword, HttpStatus.OK);
         } else {
-            // 사용자 인증 실패: 잘못된 비밀번호일 경우, 클라이언트에게 인증 실패 알림
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
+            user = userRepository.findByPassword(inputUserPassword);
 
-    @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> register(@RequestBody User user, HttpSession session) {
-        String inputPassword = user.getPassword();
+            if (user == null) {
+                // 사용자가 존재하지 않으면 회원가입
+                User newUser = new User(inputUserPassword);
+                userRepository.save(newUser);
+                session.setAttribute("password", newUser.getPassword());
 
-        // 입력된 비밀번호로 사용자 검색
-        User existingUser = userRepository.findByPassword(inputPassword);
-
-        // 사용자가 존재하지 않으면 회원가입
-        if (existingUser == null) {
-            // 사용자가 존재하지 않으면 새 사용자 생성 및 저장
-            User newUser = new User(inputPassword);
-            userRepository.save(newUser);
-
-            // 회원가입 성공 후 세션에 새 사용자 ID 저장
-            session.setAttribute("password", newUser.getPassword()); // 세션에 사용자 ID 저장
-
-            // 회원가입 성공 시, 클라이언트에게 리다이렉트 URL 반환
-            Map<String, String> response = new HashMap<>();
-            response.put("redirectUrl", "https://tmdstamptour.netlify.app/"); // React 애플리케이션의 URL
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            // 사용자 인증 실패: 잘못된 비밀번호일 경우, 클라이언트에게 인증 실패 알림
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                logger.info("회원가입 및 로그인 성공: 세션에 저장된 password = " + session.getAttribute("password"));
+                return new ResponseEntity<>("회원가입 및 로그인 성공", HttpStatus.OK);
+            } else {
+                // 사용자가 존재하면 로그인
+                session.setAttribute("password", user.getPassword());
+                logger.info("로그인 성공: 세션에 저장된 password = " + session.getAttribute("password"));
+                return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+            }
         }
     }
 }
