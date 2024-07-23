@@ -23,7 +23,7 @@ public class WebConfig {
                 "http://localhost:63342",
                 "http://localhost:3000",
                 "https://tmdstamptour.netlify.app",
-                "https://dm4buye7dda55.cloudfront.net"
+                "https://tmdstamptour.netlify.app/"
         ));
 
         config.addAllowedHeader(CorsConfiguration.ALL);

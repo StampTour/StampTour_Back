@@ -14,12 +14,12 @@ import lombok.Setter;
 public class User {
     @Id
     @Column(nullable = false)
-    private String password;
+    private String userid;
 
 
     @Builder
-    public User(String password) {
-        this.password = password;
+    public User(String userid) {
+        this.userid = userid;
     }
 
 }

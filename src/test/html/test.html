@@ -24,7 +24,7 @@
     function login() {
         const password = document.getElementById('password').value;
 
-        axios.post('https://dm4buye7dda55.cloudfront.net/api/login', { password })
+        axios.post('http://localhost:8080/api/login', { password })
             .then(response => {
                 console.log('서버 응답:', response.data);
                 document.getElementById('response').innerText = response.data;
