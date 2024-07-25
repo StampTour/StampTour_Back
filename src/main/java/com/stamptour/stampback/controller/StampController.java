@@ -1,10 +1,10 @@
 package com.stamptour.stampback.controller;
 
 
-import com.stamptour.stampback.domain.QrStamp;
-import com.stamptour.stampback.dto.QrResponseDto;
+import com.stamptour.stampback.domain.User;
+import com.stamptour.stampback.dto.UserResponseDto;
 import com.stamptour.stampback.repository.UserRepository;
-import com.stamptour.stampback.service.QrService;
+import com.stamptour.stampback.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,76 +15,81 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = {"http://localhost:63342",
-        "http://localhost:3000",
-        "https://tmdstamptour.netlify.app",
-        "https://tmdstamptour.netlify.app/"})
 @RestController
-@RequestMapping("/api/stamp")
+@RequestMapping("/api")
 public class StampController {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
-    private QrService qrService;
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(StampController.class);
 
     @PostMapping("/updateData/{param}")
-    public ResponseEntity<QrResponseDto> updateData(@PathVariable int param, @RequestBody QrStamp qrstamp, HttpSession session) {
+    public ResponseEntity<UserResponseDto> updateData(@PathVariable int param, HttpSession session) {
+        // 세션에서 사용자 ID를 가져옵니다.
         String sessionUserUserid = (String) session.getAttribute("userid");
+        logger.info("스탬프 업데이트 요청을 받은 사용자 ID: " + sessionUserUserid);
 
-        // 세션에서 가져온 사용자 pw로 Qr 엔티티 조회
-        Optional<QrStamp> qrOptional = qrService.findByUsrid(sessionUserUserid);
+        // 사용자 ID로 데이터베이스에서 사용자 정보를 조회합니다.
+        Optional<User> userOptional = userService.findByUserid(sessionUserUserid);
 
-        if (qrOptional.isEmpty()) {
+        // 사용자가 데이터베이스에 존재하지 않는 경우
+        if (userOptional.isEmpty()) {
+            logger.warn("데이터베이스에서 사용자 ID를 찾을 수 없습니다: " + sessionUserUserid);
             return ResponseEntity.notFound().build();
         }
 
-        QrStamp qr = qrOptional.get();
-        // param 값에 따라 QR 데이터 수정
+        // 사용자 정보를 가져옵니다.
+        User user = userOptional.get();
+
+        // param 값에 따라 QR 상태를 업데이트합니다.
         switch (param) {
             case 1:
-                qr.setQr1(true);
+                user.setQr1(true);
                 break;
             case 2:
-                qr.setQr2(true);
+                user.setQr2(true);
                 break;
             case 3:
-                qr.setQr3(true);
+                user.setQr3(true);
                 break;
             case 4:
-                qr.setQr4(true);
+                user.setQr4(true);
                 break;
             case 5:
-                qr.setQr5(true);
+                user.setQr5(true);
                 break;
             case 6:
-                qr.setQr6(true);
+                user.setQr6(true);
                 break;
             case 7:
-                qr.setQr7(true);
+                user.setQr7(true);
                 break;
             case 8:
-                qr.setQr8(true);
+                user.setQr8(true);
                 break;
             case 9:
-                qr.setQr9(true);
+                user.setQr9(true);
                 break;
             case 10:
-                qr.setQr10(true);
+                user.setQr10(true);
                 break;
             default:
+                logger.error("잘못된 QR 파라미터 값: " + param);
                 return ResponseEntity.badRequest().build();
         }
 
-        // 수정된 QR 엔티티 저장
-        qrService.saveQrStamp(qr);
+        // 수정된 사용자 정보를 데이터베이스에 저장합니다.
+        userService.saveQrstamp(user);
 
-        // QrResponseDto 생성 및 반환
-        QrResponseDto responseDto = new QrResponseDto(qr);
-
+        // 사용자 응답 DTO를 생성하고 반환합니다.
+        UserResponseDto responseDto = new UserResponseDto(user);
+        logger.info("사용자 정보 업데이트 완료: " + responseDto);
 
         return ResponseEntity.ok(responseDto);
     }
 }
+
