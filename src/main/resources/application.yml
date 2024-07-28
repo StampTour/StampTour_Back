@@ -1,0 +1,30 @@
+server:
+    port: 8080
+    ssl:
+        key-store: classpath:keystore.p12
+        key-store-password: stamptourpkcs
+        key-store-type: PKCS12
+        enabled: true
+    servlet:
+        session:
+            timeout: 86400
+
+spring:
+    application:
+        name: finalStamp
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://ls-7d364c1e0c0dbf6ea580a4a1b4db9e2a1b7625bb.c76ie4socr1d.ap-northeast-2.rds.amazonaws.com:3306/stamptour?serverTimezone=UTC&characterEncoding=UTF-8
+        username: dbmasteruser
+        password: test1234
+    jpa:
+        properties:
+            hibernate.transaction.jta.platform: ""
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        open-in-view: false
+
+jwt:
+    secret: your_secret_key
+    expiration: 86400000  # 1일 (밀리초)
