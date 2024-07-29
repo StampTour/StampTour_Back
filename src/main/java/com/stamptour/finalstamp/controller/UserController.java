@@ -104,7 +104,7 @@ public class UserController {
                     user.setQr10(true);
                     break;
                 default:
-                    logger.error("$ QR param is error: " + id);
+                    logger.warn("$ QR param is nope: " + id);
             }
 
             // QR 코드 업데이트 후 사용자 정보 저장

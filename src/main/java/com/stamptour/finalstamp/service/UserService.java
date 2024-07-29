@@ -34,12 +34,55 @@ public class UserService {
 
     // QR 상태 업데이트 및 저장
     public void saveQrstamp(User user) {
+        logger.info("userService : saveQrStamp start");
         userRepository.save(user);
     }
 
     // 토큰 저장 메서드 추가
     public void saveUserToken(User user, String token) {
+        logger.info("userService : saveUserToken");
         user.setToken(token);
+        userRepository.save(user);
+    }
+
+    public void updateQrFlag(String userid, int stampedId) {
+        User user = userRepository.findByUserid(userid).orElseThrow(() -> new RuntimeException("User not found"));
+
+        switch (stampedId) {
+            case 1:
+                user.setQr1(true);
+                break;
+            case 2:
+                user.setQr2(true);
+                break;
+            case 3:
+                user.setQr3(true);
+                break;
+            case 4:
+                user.setQr4(true);
+                break;
+            case 5:
+                user.setQr5(true);
+                break;
+            case 6:
+                user.setQr6(true);
+                break;
+            case 7:
+                user.setQr7(true);
+                break;
+            case 8:
+                user.setQr8(true);
+                break;
+            case 9:
+                user.setQr9(true);
+                break;
+            case 10:
+                user.setQr10(true);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid stampedId: " + stampedId);
+        }
+
         userRepository.save(user);
     }
 
@@ -49,10 +92,10 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found for token: " + token));
     }
 
-    // 1분마다 실행되도록 크론 표현식 수정
+
     @Scheduled(cron = "0 0 * * * *") // 매 시마다 실행
     public void deleteExpiredUsers() {
-        LocalDateTime expirationTime = LocalDateTime.now().minusDays(1); // 1분 전의 시간
+        LocalDateTime expirationTime = LocalDateTime.now().minusDays(1);
         List<User> expiredUsers = userRepository.findByCreatedAtBefore(expirationTime);
         userRepository.deleteAll(expiredUsers);
 

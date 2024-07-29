@@ -27,4 +27,3 @@ spring:
 
 jwt:
     secret: your_secret_key
-    expiration: 86400000  # 1일 (밀리초)
