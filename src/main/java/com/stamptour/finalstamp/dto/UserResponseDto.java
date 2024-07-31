@@ -45,8 +45,4 @@ public class UserResponseDto {
     public UserResponseDto(String message) {
         this.message = message;
     }
-
-    public void setAllowRetry(boolean allowRetry) {
-        this.allowRetry = allowRetry;
-    }
 }
