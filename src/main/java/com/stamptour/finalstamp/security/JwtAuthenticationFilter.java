@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = null;
         String jwtToken = null;
 
+        // Authorization 헤더에서 JWT 토큰을 추출합니다.
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -50,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.warn("# JWT Token does not begin with Bearer String");
         }
 
+        // JWT 토큰이 유효하고 SecurityContext에 인증 정보가 설정되지 않은 경우
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.isTokenValid(jwtToken)) {
                 JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, jwtToken);

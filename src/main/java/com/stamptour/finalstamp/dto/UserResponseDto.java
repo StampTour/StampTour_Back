@@ -23,6 +23,9 @@ public class UserResponseDto {
     private boolean qr9;
     private boolean qr10;
 
+    private String message;
+    private boolean allowRetry;
+
     // 기존 User 객체를 사용하여 생성하는 생성자
     public UserResponseDto(User user) {
         this.userid = user.getUserid();
@@ -37,5 +40,13 @@ public class UserResponseDto {
         this.qr8 = user.isQr8();
         this.qr9 = user.isQr9();
         this.qr10 = user.isQr10();
+    }
+
+    public UserResponseDto(String message) {
+        this.message = message;
+    }
+
+    public void setAllowRetry(boolean allowRetry) {
+        this.allowRetry = allowRetry;
     }
 }
