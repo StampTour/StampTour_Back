@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.*;
 import java.util.Optional;
 
 
@@ -44,6 +43,7 @@ public class UserService {
         user.setToken(token);
         userRepository.save(user);
     }
+
 
     public void updateQrFlag(String userid, int stampedId) {
         User user = userRepository.findByUserid(userid).orElseThrow(() -> new RuntimeException("User not found"));
@@ -93,14 +93,12 @@ public class UserService {
     }
 
 
-    @Scheduled(cron = "0 0 * * * *") // 매 시마다 실행
+    // 정해진 시간에 만료된 사용자와 관련된 토큰 삭제
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul") // 한국 시간 자정에 실행
     public void deleteExpiredUsers() {
-        LocalDateTime expirationTime = LocalDateTime.now().minusDays(1);
-        List<User> expiredUsers = userRepository.findByCreatedAtBefore(expirationTime);
-        userRepository.deleteAll(expiredUsers);
-
-        // 로그를 추가하여 어떤 사용자가 삭제되었는지 확인
-        logger.info("Deleted users who were created before: " + expirationTime);
+        // 한국 시간을 기준으로 2일 전의 날짜와 시간을 구합니다.
+        LocalDateTime cutoffDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime().minusDays(1);
+        userRepository.deleteUserAndTokens(cutoffDateTime); // 사용자 및 토큰 삭제
+        logger.info("Expired users and associated tokens have been deleted." + cutoffDateTime);
     }
-
 }

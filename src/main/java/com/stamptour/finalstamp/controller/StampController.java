@@ -24,7 +24,7 @@ public class StampController {
 
     private static final Logger logger = LoggerFactory.getLogger(StampController.class);
 
-    @GetMapping("/user-info")
+    @GetMapping("/userinfo")
     public ResponseEntity<UserResponseDto> getUserInfo(@RequestHeader("Authorization") String token) {
         logger.warn("- user-info request received");
 
@@ -49,7 +49,7 @@ public class StampController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping("/save-stamp")
+    @PostMapping("/savestamp")
     public ResponseEntity<UserResponseDto> updateQrInfo(@RequestParam("stampedId") int stampedId, @RequestHeader("Authorization") String token) {
         logger.warn("- update QR info request received");
 
