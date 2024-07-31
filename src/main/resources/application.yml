@@ -25,4 +25,4 @@ spring:
         time-zone: Asia/Seoul
 
 jwt:
-    secret: stamptoursecretkeyyy
+    secret: your-secret-key

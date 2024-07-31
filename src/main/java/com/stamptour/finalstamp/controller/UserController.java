@@ -7,7 +7,6 @@ import com.stamptour.finalstamp.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,10 +72,10 @@ public class UserController {
             user = userOptional.get();
             logger.info("** login userid completed: " + user.getUserid());
 
-            // 이미 존재하는 ID에 대해 프론트엔드에 메시지를 반환하고 요청을 종료합니다.
-            UserResponseDto responseDto = new UserResponseDto("User ID already exists.");
-            responseDto.setAllowRetry(true); // 재시도를 허용하는 플래그를 설정합니다.
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+//            // 이미 존재하는 ID에 대해 프론트엔드에 메시지를 반환하고 요청을 종료합니다.
+//            UserResponseDto responseDto = new UserResponseDto("User ID already exists.");
+//            responseDto.setAllowRetry(true); // 재시도를 허용하는 플래그를 설정합니다.
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
         }
 
         // 스탬프 요청이 있을 경우, QR 코드와 관련된 필드를 업데이트합니다.
