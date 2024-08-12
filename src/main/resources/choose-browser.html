@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>크롬에서 열기</title>
+</head>
+<body>
+<h1>크롬에서 열기</h1>
+<p>보다 나은 경험을 위해 크롬 브라우저에서 이 URL을 열어주세요.</p>
+<a id="chrome-link" href="#">크롬으로 열기</a>
+<script>
+    // URL과 선택적 매개변수를 쿼리 문자열에서 가져옵니다
+    const urlParams = new URLSearchParams(window.location.search);
+    const chromeUrl = urlParams.get('url');
+
+    // 링크의 href 속성을 설정합니다
+    document.getElementById('chrome-link').href = chromeUrl;
+</script>
+</body>
+</html>
