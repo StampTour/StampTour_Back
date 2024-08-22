@@ -8,7 +8,5 @@ import lombok.Setter;
 public class LoginRequest {
     private UserRequest userRequest;
     private StampRequest stampRequest;
-
-    // getters and setters
 }
 

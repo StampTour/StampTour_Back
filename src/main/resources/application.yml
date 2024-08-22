@@ -1,10 +1,10 @@
 server:
     port: 8080
-#    ssl:
-#        enabled: true
-#        key-store: classpath:keystore.p12
-#        key-store-password: stamptourpkcs
-#        key-store-type: PKCS12
+    ssl:
+        enabled: true
+        key-store: classpath:keystore.p12
+        key-store-type: PKCS12
+        key-store-password: stamptourpkcs
 
 spring:
     application:
@@ -25,4 +25,5 @@ spring:
         time-zone: Asia/Seoul
 
 jwt:
-    secret: your-secret-key
+    secret: stamptourJWTJWTstamptour12345678910
+    expiration-time: 86400000

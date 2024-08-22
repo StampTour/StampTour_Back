@@ -43,12 +43,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(jwtToken);
             } catch (IllegalArgumentException e) {
-                logger.error("$ Unable to get JWT Token", e);
+                logger.error("Jwt Filter - Unable to get JWT Token: {}", e.getMessage());
             } catch (ExpiredJwtException e) {
-                logger.error("$ JWT Token has expired", e);
+                logger.error("Jwt Filter - JWT Token has expired: {}", e.getMessage());
             }
+        } else if (requestTokenHeader == null) {
+            logger.error("Jwt Filter - JWT Token is null");
         } else {
-            logger.warn("# JWT Token does not begin with Bearer String");
+            logger.warn("Jwt Filter - JWT Token does not begin with Bearer String");
         }
 
         // JWT 토큰이 유효하고 SecurityContext에 인증 정보가 설정되지 않은 경우

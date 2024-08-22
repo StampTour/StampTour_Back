@@ -26,22 +26,22 @@ public class StampController {
 
     @GetMapping("/userinfo")
     public ResponseEntity<UserResponseDto> getUserInfo(@RequestHeader("Authorization") String token) {
-        logger.warn("- user-info request received");
+        logger.warn("StampController - user-info request received");
 
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
 
         if (!jwtUtil.isTokenValid(token)) {
-            logger.warn("# invalid token(stamp)");
+            logger.warn("StampController -# invalid token(stamp)");
             return ResponseEntity.status(401).build();
         }
 
         String userid = jwtUtil.extractUsername(token);
-        logger.info("** user-info request for user ID: " + userid);
+        logger.info("StampController - ** user-info request for user ID: {}", userid);
 
         User user = userService.findByUserid(userid).orElseThrow(() -> new RuntimeException("User not found"));
-        logger.info("** user-info findByToken check: " + user);
+        logger.info("StampController - ** user-info findByToken check: {}", user);
 
         UserResponseDto responseDto = new UserResponseDto(user);
         responseDto.setToken(token);
@@ -51,24 +51,24 @@ public class StampController {
 
     @PostMapping("/savestamp")
     public ResponseEntity<UserResponseDto> updateQrInfo(@RequestParam("stampedId") int stampedId, @RequestHeader("Authorization") String token) {
-        logger.warn("- update QR info request received");
+        logger.warn("StampController - update QR info request received");
 
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
 
         if (!jwtUtil.isTokenValid(token)) {
-            logger.warn("# invalid token");
+            logger.warn("StampController - # invalid token");
             return ResponseEntity.status(401).build();
         }
 
         String userid = jwtUtil.extractUsername(token);
-        logger.info("** update QR info request for user ID: " + userid);
+        logger.info("StampController - ** update QR info request for user ID: {}", userid);
 
         Optional<User> userOptional = userService.findByUserid(userid);
 
         if (userOptional.isEmpty()) {
-            logger.warn("# not found user ID: " + userid);
+            logger.warn("StampController - # not found user ID: {}", userid);
             return ResponseEntity.notFound().build();
         }
 

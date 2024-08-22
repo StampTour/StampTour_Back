@@ -31,11 +31,6 @@ public class WebConfig {
 
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.POST);
-        config.addAllowedMethod(HttpMethod.HEAD);
-        config.addAllowedMethod(HttpMethod.PUT);
-        config.addAllowedMethod(HttpMethod.DELETE);
-        config.addAllowedMethod(HttpMethod.TRACE);
-        config.addAllowedMethod(HttpMethod.OPTIONS);
 
         config.setMaxAge(3600L);
 
