@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserid(String userid);
-    Optional<User> findByToken(String token);
+    Optional<User> findBySessionId(String sessionId);
 
     // ^^ 특정 날짜 및 시간 이전의 사용자 삭제
     @Modifying

@@ -30,11 +30,6 @@ dependencies {
     // Spring Validation: 데이터 유효성 검사(예: 폼 입력 데이터의 유효성 검사)를 지원하는 구성 요소
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // JSON Web Token(JWT): JWT 생성, 파싱, 서명 검증을 지원하는 라이브러리
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
     // Spring Security: 애플리케이션에 인증 및 권한 부여 기능을 추가하는 구성 요소
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
@@ -54,6 +49,8 @@ dependencies {
     // Spring Boot 테스트: Spring Boot 애플리케이션을 테스트하기 위한 다양한 테스트 프레임워크와 라이브러리 포함
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+
 
 tasks.named('test') {
     useJUnitPlatform()

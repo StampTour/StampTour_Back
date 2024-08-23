@@ -5,6 +5,9 @@ server:
         key-store: classpath:keystore.p12
         key-store-type: PKCS12
         key-store-password: stamptourpkcs
+    servlet:
+        session:
+            timeout: 1d
 
 spring:
     application:
@@ -24,6 +27,3 @@ spring:
     jackson:
         time-zone: Asia/Seoul
 
-jwt:
-    secret: stamptourJWTJWTstamptour12345678910
-    expiration-time: 86400000

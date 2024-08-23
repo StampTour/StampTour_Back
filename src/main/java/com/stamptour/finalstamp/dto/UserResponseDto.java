@@ -11,7 +11,7 @@ import lombok.Setter;
 public class UserResponseDto {
 
     private String userid;
-    private String token;
+    private String sessionId;
     private boolean qr1;
     private boolean qr2;
     private boolean qr3;
@@ -27,7 +27,7 @@ public class UserResponseDto {
     // 기존 User 객체를 사용하여 생성하는 생성자
     public UserResponseDto(User user) {
         this.userid = user.getUserid();
-        this.token = user.getToken();
+        this.sessionId = user.getSessionId();
         this.qr1 = user.isQr1();
         this.qr2 = user.isQr2();
         this.qr3 = user.isQr3();

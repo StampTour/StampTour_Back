@@ -22,8 +22,8 @@ public class User {
     @Column(name = "userid", nullable = false, unique = true)
     private String userid;
 
-    @Column(name = "token")
-    private String token;
+    @Column(name = "sessionId")
+    private String sessionId;
 
     @Column(name = "qr1", nullable = false)
     private boolean qr1;

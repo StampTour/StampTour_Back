@@ -19,7 +19,6 @@ public class WebConfig {
         config.setAllowCredentials(true); // 인증 정보 허용
 
         config.setAllowedOrigins(Arrays.asList(
-                "http://localhost:63342",
                 "http://localhost:3000",
                 "http://localhost:8080",
                 "https://tmdstamptour.netlify.app",

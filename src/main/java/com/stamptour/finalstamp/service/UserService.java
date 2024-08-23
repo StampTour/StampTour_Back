@@ -38,12 +38,11 @@ public class UserService {
     }
 
     // 토큰 저장 메서드 추가
-    public void saveUserToken(User user, String token) {
-        logger.info("userService : saveUserToken");
-        user.setToken(token);
+    public void saveSession(User user, String sessionId) {
+        logger.info("userService : saveSession");
+        user.setSessionId(sessionId);
         userRepository.save(user);
     }
-
 
     public void updateQrFlag(String userid, int stampedId) {
         User user = userRepository.findByUserid(userid).orElseThrow(() -> new RuntimeException("User not found"));
@@ -86,12 +85,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // findByToken 메서드 추가
-    public User findByToken(String token) {
-        return userRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("User not found for token: " + token));
-    }
-
 
     // 정해진 시간에 만료된 사용자와 관련된 토큰 삭제
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul") // 한국 시간 자정에 실행
@@ -99,6 +92,6 @@ public class UserService {
         // 한국 시간을 기준으로 2일 전의 날짜와 시간을 구합니다.
         LocalDateTime cutoffDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime().minusDays(1);
         userRepository.deleteUserAndTokens(cutoffDateTime); // 사용자 및 토큰 삭제
-        logger.info("Expired users and associated tokens have been deleted." + cutoffDateTime);
+        logger.info("Expired users and associated tokens have been deleted. : {} ", cutoffDateTime);
     }
 }
