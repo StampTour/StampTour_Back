@@ -33,6 +33,9 @@ dependencies {
     // Spring Security: 애플리케이션에 인증 및 권한 부여 기능을 추가하는 구성 요소
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    implementation 'org.springframework.session:spring-session-core:3.3.2'
+
+
     // MySQL 데이터베이스 드라이버: MySQL 데이터베이스와 연결하기 위한 JDBC 드라이버
     runtimeOnly 'com.mysql:mysql-connector-j'
 

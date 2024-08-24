@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class UserController {
 
-    // UserService를 통해 사용자 데이터에 접근합니다.
+    // UserService 를 통해 사용자 데이터에 접근합니다.
     @Autowired
     private UserService userService;
 

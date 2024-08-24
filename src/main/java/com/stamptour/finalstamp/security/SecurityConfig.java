@@ -7,17 +7,34 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.session.web.http.CookieHttpSessionIdResolver;
+import org.springframework.session.web.http.DefaultCookieSerializer;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 @Configuration
 public class SecurityConfig {
 
-    /**
-     * Spring Security의 HTTP 보안 구성을 설정합니다.
-     *
-     * @param http HTTP 보안 설정을 위한 객체
-     * @return 구성된 SecurityFilterChain 객체
-     * @throws Exception 보안 설정 중 발생할 수 있는 예외
-     */
+    @Bean
+    public DefaultCookieSerializer cookieSerializer() {
+
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("JSESSIONID"); // 쿠키 이름 설정
+        serializer.setDomainName("tmdstamptour.netlify.app"); // 도메인 설정
+        serializer.setCookiePath("/"); // 경로 설정
+        serializer.setUseHttpOnlyCookie(false); // HttpOnly 설정
+        serializer.setUseSecureCookie(true); // Secure 설정
+        serializer.setSameSite("None"); // SameSite 설정
+        return serializer;
+    }
+
+    @Bean
+    public HttpSessionIdResolver httpSessionIdResolver(DefaultCookieSerializer cookieSerializer) {
+        // CookieHttpSessionIdResolver 를 생성하고 DefaultCookieSerializer 를 설정합니다.
+        CookieHttpSessionIdResolver resolver = new CookieHttpSessionIdResolver();
+        resolver.setCookieSerializer(cookieSerializer);
+        return resolver;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -32,7 +49,7 @@ public class SecurityConfig {
                         .expiredUrl("/api/login")
                 )
 
-                // URL에 따른 권한 부여 정책 설정
+                // URL 에 따른 권한 부여 정책 설정
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
@@ -41,13 +58,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * AuthenticationManager를 빈으로 등록합니다.
-     *
-     * @param authenticationConfiguration 인증 설정 객체
-     * @return 구성된 AuthenticationManager 객체
-     * @throws Exception AuthenticationManager 구성 중 발생할 수 있는 예외
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
