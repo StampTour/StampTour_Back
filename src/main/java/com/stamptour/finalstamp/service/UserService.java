@@ -44,7 +44,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateQrFlag(String userid, int stampedId) {
+    public void updateQrFlag(String userid, Integer stampedId) {
         User user = userRepository.findByUserid(userid).orElseThrow(() -> new RuntimeException("User not found"));
 
         switch (stampedId) {

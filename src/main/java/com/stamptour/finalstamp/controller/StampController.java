@@ -37,6 +37,7 @@ public class StampController {
 
         // 세션에서 사용자 정보 가져오기
         User user = (User) session.getAttribute("user");
+        logger.info("user info - session user:{}",user);
         if (user == null) {
             // 세션에 사용자가 없을 경우, 401 상태 코드를 반환
             logger.info("StampController userinfo - user is null");
@@ -62,13 +63,16 @@ public class StampController {
      * @return 업데이트된 사용자 정보를 담은 응답 객체 또는 인증 실패 시 401 상태 코드 반환
      */
     @PostMapping("/savestamp")
-    public ResponseEntity<UserResponseDto> updateQrInfo(@RequestParam("stampedId") int stampedId, HttpSession session) {
+    public ResponseEntity<UserResponseDto> updateQrInfo(@RequestParam(value = "stampedId", required = false) Integer stampedId, HttpSession session) {
         logger.info("StampController - update QR info request received");
 
+        logger.info("StampController - session info: {}", session.getAttributeNames());
+
+
         // 세션에서 사용자 정보 가져오기
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");//**
+        logger.info("save stamp - session user:{}", user);
         if (user == null) {
-            // 세션에 사용자가 없을 경우, 401 상태 코드를 반환
             logger.warn("StampController save stamp - user is null");
             return ResponseEntity.status(401).build();
         }

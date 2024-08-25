@@ -9,8 +9,7 @@ server:
         session:
             timeout: 1d
             cookie:
-                name: id
-                domain: tmdstamptour.netlify.app
+                name: JSESSIONID
                 path: /
                 http-only: false
                 secure: true

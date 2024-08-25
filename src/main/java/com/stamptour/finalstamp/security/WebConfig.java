@@ -8,6 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class WebConfig  {
@@ -16,7 +17,10 @@ public class WebConfig  {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowCredentials(true); // 인증 정보 허용
+
+
 
         config.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
@@ -30,6 +34,8 @@ public class WebConfig  {
 
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.POST);
+
+        config.setExposedHeaders(List.of("Set-Cookie"));
 
         config.setMaxAge(3600L);
 

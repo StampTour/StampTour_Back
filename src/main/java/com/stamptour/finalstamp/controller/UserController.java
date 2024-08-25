@@ -52,13 +52,17 @@ public class UserController {
             logger.info("User Controller - ** login userid completed: {}", user.getUserid());
         }
 
-        // 세션에 사용자 정보를 저장
-        session.setAttribute("user", user);
-        logger.info("User Controller - created session and saved user in session");
+        // 세션 ID를 생성하여 사용자 객체에 저장합니다.
+        String sessionId = session.getId();
+        user.setSessionId(sessionId);
+        userService.saveSession(user, sessionId);  // 사용자 정보를 업데이트하여 세션 ID를 저장합니다.
+
+        session.setAttribute("user", user); // 세션에 사용자 정보를 저장합니다.
+        logger.info("User Controller - saveSession: {}, {}", user, sessionId);
 
         // 스탬프 요청이 있는 경우, 해당 QR 코드 업데이트
         if (stampRequest != null) {
-            int id = stampRequest.getId();
+            Integer id = stampRequest.getId();
             switch (id) {
                 case 1 -> user.setQr1(true);
                 case 2 -> user.setQr2(true);
@@ -75,6 +79,7 @@ public class UserController {
             userService.saveQrstamp(user); // 스탬프 정보 데이터베이스에 저장
         }
 
+        logger.info("Login : {}", sessionId);
         // 사용자 정보를 응답 객체에 담아 반환
         UserResponseDto responseDto = new UserResponseDto(user);
         return ResponseEntity.ok(responseDto);
