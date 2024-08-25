@@ -16,53 +16,47 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class UserController {
 
-    // UserService 를 통해 사용자 데이터에 접근합니다.
     @Autowired
     private UserService userService;
 
-    // 로깅을 위한 Logger 객체를 생성합니다.
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
-     * 사용자의 로그인 또는 회원가입을 처리합니다.
-     * 클라이언트의 로그인 요청을 받아, 사용자 정보가 있으면 로그인, 없으면 회원가입을 진행합니다.
-     * 또한, 스탬프 요청이 있는 경우 해당 정보를 업데이트합니다.
+     * 로그인 또는 회원가입을 처리하고, 스탬프 정보가 있으면 업데이트합니다.
+     * 클라이언트의 로그인 요청을 받아 사용자 정보를 확인하고 세션을 생성합니다.
      *
-     * @param loginRequest 클라이언트로부터 받은 로그인 요청 데이터 (사용자 정보와 스탬프 정보 포함)
+     * @param loginRequest 클라이언트로부터 받은 로그인 요청 데이터
      * @param session 현재 세션 객체
      * @return 로그인 또는 회원가입 후의 사용자 정보를 담은 응답 객체
      */
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> loginOrRegister(@RequestBody LoginRequest loginRequest, HttpSession session) {
-        // 로그인 요청에서 사용자 정보와 스탬프 정보를 추출합니다.
-        UserRequest userRequest = loginRequest.getUserRequest();
-        StampRequest stampRequest = loginRequest.getStampRequest();
+        UserRequest userRequest = loginRequest.getUserRequest(); // 로그인 사용자 정보
+        StampRequest stampRequest = loginRequest.getStampRequest(); // 스탬프 요청 정보
 
-        // 입력된 사용자 ID를 가져옵니다.
         String inputUserUserid = userRequest.getUserid();
         logger.info("User Controller - ** Received login request for userid: {}", inputUserUserid);
 
-        // 데이터베이스에서 사용자 ID로 사용자를 조회합니다.
+        // 사용자 ID로 데이터베이스에서 사용자 조회
         Optional<User> userOptional = userService.findByUserid(inputUserUserid);
 
         User user;
         if (userOptional.isEmpty()) {
-            // 사용자가 존재하지 않으면, 새로운 사용자를 등록합니다.
+            // 사용자가 존재하지 않으면 새로운 사용자 등록
             user = new User(inputUserUserid);
             userService.registerUser(user);
             logger.info("User Controller - ** register userid completed: {}", inputUserUserid);
         } else {
-            // 사용자가 이미 존재하면, 해당 사용자 정보를 가져옵니다.
+            // 사용자가 이미 존재하면 해당 사용자 정보 가져오기
             user = userOptional.get();
             logger.info("User Controller - ** login userid completed: {}", user.getUserid());
         }
 
-        // 세션 ID를 생성하여 사용자 객체에 저장합니다.
-        String sessionId = session.getId();
-        user.setSessionId(sessionId);
-        userService.saveSession(user, sessionId);  // 사용자 정보를 업데이트하여 세션 ID를 저장합니다.
+        // 세션에 사용자 정보를 저장
+        session.setAttribute("user", user);
+        logger.info("User Controller - created session and saved user in session");
 
-        // 스탬프 요청이 있는 경우, 해당 QR 코드와 관련된 필드를 업데이트합니다.
+        // 스탬프 요청이 있는 경우, 해당 QR 코드 업데이트
         if (stampRequest != null) {
             int id = stampRequest.getId();
             switch (id) {
@@ -78,18 +72,12 @@ public class UserController {
                 case 10 -> user.setQr10(true);
                 default -> logger.warn("QR param is warning: {}", id);
             }
-
-            // 스탬프 정보를 데이터베이스에 저장합니다.
-            userService.saveQrstamp(user);
+            userService.saveQrstamp(user); // 스탬프 정보 데이터베이스에 저장
         }
 
-        // 세션에 사용자 정보를 저장합니다.
-        session.setAttribute("user", user);
-
-        // 사용자 정보를 담은 응답 객체를 생성합니다.
+        // 사용자 정보를 응답 객체에 담아 반환
         UserResponseDto responseDto = new UserResponseDto(user);
-
-        // 사용자 정보를 클라이언트에 반환합니다.
         return ResponseEntity.ok(responseDto);
     }
 }
+
