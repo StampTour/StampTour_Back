@@ -7,33 +7,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.session.web.http.CookieHttpSessionIdResolver;
-import org.springframework.session.web.http.DefaultCookieSerializer;
-import org.springframework.session.web.http.HttpSessionIdResolver;
 
 @Configuration
 public class SecurityConfig {
-
-    @Bean
-    public DefaultCookieSerializer cookieSerializer() {
-
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("JSESSIONID"); // 쿠키 이름 설정
-        serializer.setDomainName("tmdstamptour.netlify.app"); // 도메인 설정
-        serializer.setCookiePath("/"); // 경로 설정
-        serializer.setUseHttpOnlyCookie(false); // HttpOnly 설정
-        serializer.setUseSecureCookie(true); // Secure 설정
-        serializer.setSameSite("None"); // SameSite 설정
-        return serializer;
-    }
-
-    @Bean
-    public HttpSessionIdResolver httpSessionIdResolver(DefaultCookieSerializer cookieSerializer) {
-        // CookieHttpSessionIdResolver 를 생성하고 DefaultCookieSerializer 를 설정합니다.
-        CookieHttpSessionIdResolver resolver = new CookieHttpSessionIdResolver();
-        resolver.setCookieSerializer(cookieSerializer);
-        return resolver;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

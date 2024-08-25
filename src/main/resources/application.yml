@@ -8,6 +8,14 @@ server:
     servlet:
         session:
             timeout: 1d
+            cookie:
+                name: id
+                domain: tmdstamptour.netlify.app
+                path: /
+                http-only: false
+                secure: true
+                same-site: none
+
 
 spring:
     application:
